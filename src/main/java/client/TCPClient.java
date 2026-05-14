@@ -175,6 +175,7 @@ public class TCPClient {
             System.out.println("--- Comandos ---");
             System.out.println("   <mensaje>    - Enviar al servidor");
             System.out.println("   exit         - Salir");
+            System.out.println("Expulsar a usuario de servidor: /kick usuario");
             System.out.println("Mensaje privado: /msg usuario mensaje");
             System.out.println("Lista de usuarios conectados: /usuarios");
             System.out.println();
