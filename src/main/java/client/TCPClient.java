@@ -111,17 +111,22 @@ public class TCPClient {
      * cierra el socket y libera los recursos
      * utilizados por el cliente.
      */
-    public void stop() {
+    public void stop() {        
+        if(!connected){
+            return;
+        }
         connected = false;
         try {
             if (socket != null && !socket.isClosed()) {
-                socket.close(); // Cierra el stream y el socket
+                socket.close();
             }
             if (receiverThread != null) {
                 receiverThread.join(1000);
             }
-        } catch (Exception e) {
-            System.err.println("Error al cerrar cliente: " + e.getMessage());
+        }catch(Exception e){
+            System.err.println(
+                "Error al cerrar cliente: " + e.getMessage()
+            );
         }
         System.out.println("Cliente desconectado.");
     }
@@ -163,10 +168,17 @@ public class TCPClient {
                 if("1".equals(respuesta)){
                     System.out.println("Bienvenido al chat.\n");
                     valido = true;
+
                 } else if("0".equals(respuesta)){
-                    System.out.println("Usuario inválido o ya existente.\n" +
-                                       "Solo letras y números (3-15 caracteres).\n"
+                    System.out.println(
+                        "Usuario inválido o ya existente.\n" +
+                        "Solo letras y números (3-15 caracteres).\n"
                     );
+
+                } else if(respuesta.contains("Servidor lleno")){
+                    System.out.println("\n[SERVIDOR] " + respuesta);
+                    client.stop();
+                    return;
                 }
             }
             
