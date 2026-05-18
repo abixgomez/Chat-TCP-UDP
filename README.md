@@ -43,10 +43,15 @@ chat-tcp-udp-java/
 │   └── util/
 │       └── Protocolo.java          # Constantes y formato de mensajes
 ├── screenshots/
-│   ├── servidor_activo.png
-│   ├── registro_usuario.png
-│   ├── chat_grupal.png
-│   └── mensaje_privado.png
+│   ├── servidor_tcp.png
+│   ├── registro_tcp1.png
+│   ├── mensaje_udp.png
+│   ├── listar_usuarios.png
+│   ├── comando_kick.png
+│   ├── cliente_expulsado.png
+│   ├── mensaje_emoji.png
+│   ├── mensaje_privado.png
+│   └── desconexion.png
 ├── .gitignore
 └── README.md
 ```
@@ -97,17 +102,26 @@ Se te pedirá ingresar la IP del servidor y tu nombre de usuario.
 
 ## 📸 Capturas de pantalla
 
-### Servidor activo
-![Servidor activo](screenshots/servidor_activo.png)
+### Servidor TCP
+![Servidor TCP](screenshots/servidor_tcp.png)
+
+### Servidor UDP
+![Servidor UDP](screenshots/servidor_udp.png)
 
 ### Registro de usuario
-![Registro de usuario](screenshots/registro_usuario.png)
+![Registro de usuario](screenshots/registro_tcp.png)
 
-### Chat grupal
-![Chat grupal](screenshots/chat_grupal.png)
+### Mensjae con emojis
+![Mensaje](screenshots/mensaje_emojis.png)
 
 ### Mensaje privado
 ![Mensaje privado](screenshots/mensaje_privado.png)
+
+### Expulsar usuario
+![Expulsar usuario](screenshots/comando_kick.png)
+
+### Listar usuarios
+![Listar usuarios](screenshots/listar_usuarios.png)
 
 ---
 
