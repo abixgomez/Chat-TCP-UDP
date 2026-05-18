@@ -109,8 +109,7 @@ public class TCPServer {
     public void stop() {
         try {
             if (serverSocket != null && !serverSocket.isClosed()) {
-                serverSocket.close();
-                
+                serverSocket.close();            
             }
         } catch (IOException e) {
             System.err.println("Error al cerrar servidor: " + e.getMessage());
@@ -130,6 +129,7 @@ public class TCPServer {
         private PrintWriter out;
         private String clientInfo;
         private String nombre;
+        private boolean expulsado = false;
 
         /**
          * Constructor de ClientHandler.
@@ -203,10 +203,13 @@ public class TCPServer {
             } catch (IOException e) {
                 System.err.println("Error de conexión con cliente: " + e.getMessage());
             } finally {
-                if(nombre != null){
+                if(nombre != null){                   
                     clientes.remove(nombre.toLowerCase());
                     nombresTCP.remove(nombre.toLowerCase());
-                    broadcastSistema(nombre + " ha salido del chat.");
+                    
+                    if(!expulsado){
+                        broadcastSistema(nombre + " ha salido del chat.");
+                    }
                 }
                 try {
                     if (clientSocket != null) {
@@ -253,12 +256,19 @@ public class TCPServer {
          */
         private void mensaje(String msg){
             String timestamp = LocalDateTime.now()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            String mensajeFinal = "[" +timestamp + "] "+nombre + ": "+msg;
-            
+            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            String mensajeFinal =
+            "[" + timestamp + "] " + nombre + ": " + msg;
+
             synchronized (clientes){
-                for(PrintWriter pw :clientes.values()){
-                    pw.println(mensajeFinal);
+
+                for(PrintWriter pw : clientes.values()){
+
+                    // No enviar el mensaje al mismo usuario
+                    if(pw != out){
+                        pw.println(mensajeFinal);
+                    }
                 }
             }
         }
@@ -315,12 +325,12 @@ public class TCPServer {
             String usuario = partes[1].toLowerCase();
 
             synchronized(nombresTCP){
-                ClientHandler objetivo = nombresTCP.get(usuario);
-                if(objetivo != null){
-                    objetivo.out.println("[SERVIDOR] Has sido expulsado del chat.");
-
+                ClientHandler expulsar = nombresTCP.get(usuario);
+                if(expulsar != null){
+                    expulsar.expulsado = true;
+                    expulsar.out.println("[SERVIDOR] Has sido expulsado del chat.");
                     try{
-                        objetivo.clientSocket.close();
+                        expulsar.clientSocket.close();
                     }catch(IOException e){
                         System.err.println("Error expulsando usuario");
                     }
